@@ -146,9 +146,10 @@ struct pid_info {
 	char		*pwd;
 };
 
-SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret, int, pid)
+SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
 {
 	printk(KERN_INFO "GET_PID_INFO syscall was called.\n");
+	return 0;
 }
 
 /*
