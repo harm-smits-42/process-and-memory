@@ -134,21 +134,48 @@
 
 /*
  * Our custom syscalls for process-and-memory.
+ * Note: childs has been set to max_process from /proc/self/limits
 */
 struct pid_info {
 	int		pid;
-	char		state;
+	unsigned int	state;
 	void		*stack;
 	unsigned long	age;
-	int		*childs;
+	int		child[10873];
 	int		parent;
-	char		*root;
-	char		*pwd;
+	const char	*root;
+	const char	*pwd;
 };
 
 SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
 {
-	printk(KERN_INFO "GET_PID_INFO syscall was called.\n");
+	struct task_struct	*task;
+	struct list_head	*list;
+	int			i;
+	struct task_struct	*tmp;
+
+	read_lock(&tasklist_lock);
+	if (!(task = find_task_by_vpid(pid)))
+		return -EINVAL;
+	get_task_struct(task);
+	read_unlock(&tasklist_lock);
+	if (!task)
+		return -EINVAL;
+	memset(ret_info->child, 0, sizeof(ret_info->child));
+	ret_info->pid = pid;
+	ret_info->state = task->__state;
+	ret_info->stack = task->stack;
+	ret_info->age = task->start_time;
+	i = 0;
+	tmp = task;
+	list_for_each(list, &task->children) {
+		tmp = list_entry(list, struct task_struct, sibling);
+		ret_info->child[i] = tmp->pid;
+		i++;
+	}
+	ret_info->parent = task->parent->pid;
+	ret_info->root = task->fs->root.dentry->d_name.name;
+	ret_info->pwd = task->fs->pwd.dentry->d_name.name;
 	return 0;
 }
 
