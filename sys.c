@@ -42,6 +42,7 @@
 #include <linux/version.h>
 #include <linux/ctype.h>
 #include <linux/syscall_user_dispatch.h>
+#include <linux/pid_info.h>
 
 #include <linux/compat.h>
 #include <linux/syscalls.h>
@@ -131,21 +132,6 @@
 #ifndef GET_TAGGED_ADDR_CTRL
 # define GET_TAGGED_ADDR_CTRL()		(-EINVAL)
 #endif
-
-/*
- * Our custom syscalls for process-and-memory.
- * Note: childs has been set to max_process from /proc/self/limits
-*/
-struct pid_info {
-	int			pid;
-	unsigned int		state;
-	void			*stack;
-	unsigned long long	age;
-	int			child[10873];
-	int			parent;
-	char			root[4097];
-	char			pwd[4097];
-};
 
 SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
 {

@@ -4,6 +4,7 @@ CC= gcc
 all:
 	cp syscall_64.tbl /usr/src/linux-5.16.9/arch/x86/entry/syscalls/syscall_64.tbl
 	cp sys.c /usr/src/linux-5.16.9/kernel/sys.c
+	cp pid_info.h /usr/src/linux-5.16.9/include/uapi/linux/pid_info.h
 
 test: $(TSRC)
 	$(CC) $? -o test
