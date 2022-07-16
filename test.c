@@ -4,14 +4,14 @@
 #include <stdlib.h>
 
 struct pid_info {
-	int		pid;
-	unsigned int	state;
-	void		*stack;
-	unsigned long	age;
-	int		childs[10873];
-	int		parent;
-	const char	*root;
-	const char	*pwd;
+	int			pid;
+	unsigned int		state;
+	void			*stack;
+	unsigned long long	age;
+	int			childs[10873];
+	int			parent;
+	char			root[4097];
+	char			pwd[4097];
 };
 
 int main(int argc, char **argv)

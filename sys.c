@@ -137,14 +137,14 @@
  * Note: childs has been set to max_process from /proc/self/limits
 */
 struct pid_info {
-	int		pid;
-	unsigned int	state;
-	void		*stack;
-	unsigned long	age;
-	int		child[10873];
-	int		parent;
-	const char	*root;
-	const char	*pwd;
+	int			pid;
+	unsigned int		state;
+	void			*stack;
+	unsigned long long	age;
+	int			child[10873];
+	int			parent;
+	char			root[4097];
+	char			pwd[4097];
 };
 
 SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
@@ -174,8 +174,9 @@ SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
 		i++;
 	}
 	ret_info->parent = task->parent->pid;
-	ret_info->root = task->fs->root.dentry->d_name.name;
-	ret_info->pwd = task->fs->pwd.dentry->d_name.name;
+	strcpy(ret_info->root, task->fs->root.dentry->d_name.name);
+	strcpy(ret_info->root, task->fs->pwd.dentry->d_name.name);
+
 	return 0;
 }
 
