@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 	printf("pid=%d\n", in.pid);
 	printf("state=%d\n", in.state);
 	printf("stack=%p\n", in.stack);
-	printf("age=%lu\n", in.age);
+	printf("age=%llu\n", in.age);
 	for (int i = 0; in.childs[i] != 0; i++)
 		printf("child(%d) pid=[%d]\n", i, in.childs[i]);
 	printf("parent pid=%d\n", in.parent);
