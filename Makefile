@@ -28,3 +28,4 @@ test: $(TSRC)
 
 clean:
 	rm -rf test sample
+	pidof sample | xargs kill -9 2>/dev/null || true

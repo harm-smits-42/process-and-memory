@@ -151,7 +151,7 @@ SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
 	ret_info->pid = pid;
 	ret_info->state = task->__state;
 	ret_info->stack = task->stack;
-	ret_info->age = ktime_get_real_ns() - task->start_time;
+	ret_info->age = ktime_get_ns() - task->start_time;
 	i = 0;
 	tmp = task;
 	list_for_each(list, &task->children) {
