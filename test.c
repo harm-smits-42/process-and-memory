@@ -1,5 +1,6 @@
 #include <sys/syscall.h>
-#include <linux/pid_info.h>
+//#include <linux/pid_info.h>
+#include "/usr/src/linux-5.16.9/include/uapi/linux/pid_info.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,8 +16,8 @@ int main(int argc, char **argv)
 	printf("state=%d\n", in.state);
 	printf("stack=%p\n", in.stack);
 	printf("age=%llu\n", in.age);
-	for (int i = 0; in.childs[i] != 0; i++)
-		printf("child(%d) pid=[%d]\n", i, in.childs[i]);
+	for (int i = 0; in.child[i] != 0; i++)
+		printf("child(%d) pid=[%d]\n", i, in.child[i]);
 	printf("parent pid=%d\n", in.parent);
 	printf("root=%s\n", in.root);
 	printf("pwd=%s\n", in.pwd);

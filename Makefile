@@ -24,6 +24,7 @@ push:
 
 test: $(TSRC)
 	$(CC) $? -o test
+	$(CC) sample.c -o sample
 
 clean:
-	rm -rf test
+	rm -rf test sample
