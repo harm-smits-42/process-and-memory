@@ -140,6 +140,7 @@ SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
 	int			i;
 	struct task_struct	*tmp;
 	char			*pwd_buff;
+	char			*tmp_buff;
 
 	read_lock(&tasklist_lock);
 	if (!(task = find_task_by_vpid(pid)))
@@ -162,9 +163,11 @@ SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
 	}
 	ret_info->parent = task->parent->pid;
 	strcpy(ret_info->root, task->fs->root.dentry->d_name.name);
-	if (!(pwd_buff = kmalloc(4097, GFP_KERNEL)))
+	if (!(pwd_buff = kmalloc(420, GFP_KERNEL)))
 		return -EINVAL;
-	strcpy(ret_info->pwd, d_path(&task->fs->pwd, pwd_buff, sizeof(pwd_buff)));
+	tmp_buff = d_path(&(task->fs->pwd), pwd_buff, 420);
+	if (tmp_buff != (void *)-ENAMETOOLONG)
+		strcpy(ret_info->pwd, tmp_buff);
 	kfree(pwd_buff);
 	return 0;
 }

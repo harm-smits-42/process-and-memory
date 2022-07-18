@@ -3,6 +3,8 @@
 int main()
 {
 	int pid =	fork();
+	if (!pid)
+		chroot("/root");
 	if (pid){
 		fork();
 	}

@@ -22,8 +22,8 @@ push:
 	cp sys.c /usr/src/linux-5.16.9/kernel/sys.c
 	cp pid_info.h /usr/src/linux-5.16.9/include/uapi/linux/pid_info.h
 
-test: $(TSRC)
-	$(CC) $? -o test
+test:
+	$(CC) test.c -o test
 	$(CC) sample.c -o sample
 
 clean:
