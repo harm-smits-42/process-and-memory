@@ -162,7 +162,7 @@ SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
 	}
 	ret_info->parent = task->parent->pid;
 	strcpy(ret_info->root, task->fs->root.dentry->d_name.name);
-	if (!(pwd_buff = kmalloc(4097)))
+	if (!(pwd_buff = kmalloc(4097, GFP_KERNEL)))
 		return -EINVAL;
 	strcpy(ret_info->pwd, d_path(&task->fs->pwd, pwd_buff, sizeof(pwd_buff)));
 	kfree(pwd_buff);
