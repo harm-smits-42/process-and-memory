@@ -143,12 +143,12 @@ SYSCALL_DEFINE2(get_pid_info, struct pid_info *, ret_info, int, pid)
 	char			*tmp_buff;
 
 	read_lock(&tasklist_lock);
-	if (!(task = find_task_by_vpid(pid)))
+	if (!(task = find_task_by_vpid(pid))) {
+		read_unlock(&tasklist_lock);
 		return -EINVAL;
+	}
 	get_task_struct(task);
 	read_unlock(&tasklist_lock);
-	if (!task)
-		return -EINVAL;
 	memset(ret_info->child, 0, sizeof(ret_info->child));
 	ret_info->pid = pid;
 	ret_info->state = task->__state;
